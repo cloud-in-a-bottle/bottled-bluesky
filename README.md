@@ -1,11 +1,11 @@
-# openhost-bluesky
+# bottled-bluesky
 
-Self-hosted Bluesky for OpenHost: the official **AT Protocol PDS** (Personal
+Self-hosted Bluesky for Cloud in a Bottle: the official **AT Protocol PDS** (Personal
 Data Server) plus the official **Bluesky web client**, served together on a
 single domain — `https://bluesky.<your-zone>`.
 
 You get a real Bluesky account whose identity and data live on your own
-OpenHost box, and a browser UI to use it. Your posts federate into the wider
+Cloud in a Bottle box, and a browser UI to use it. Your posts federate into the wider
 Bluesky network; your timeline/feeds are read back through Bluesky's public
 AppView.
 
@@ -19,7 +19,7 @@ AppView.
 
 ## How it works
 
-Everything lives at one domain. The auth-proxy on the OpenHost-routed port
+Everything lives at one domain. The auth-proxy on the Cloud in a Bottle-routed port
 routes by path:
 
 - **PDS** owns `/xrpc/*`, `/.well-known/*`, `/oauth/*`, `/@atproto/*`,
@@ -28,8 +28,8 @@ routes by path:
 
 Those PDS prefixes are also declared in `openhost.toml`'s `public_paths` so
 that peer servers, the relay/AppView, and handle resolution can reach them
-without OpenHost SSO — federation requires an anonymous, public XRPC surface.
-The web UI itself sits behind OpenHost SSO (owner-only), since it's a personal
+without Cloud in a Bottle SSO — federation requires an anonymous, public XRPC surface.
+The web UI itself sits behind Cloud in a Bottle SSO (owner-only), since it's a personal
 client.
 
 ### Your handle
@@ -39,11 +39,11 @@ Your account handle is the app's own routable subdomain, and it **federates**
 PDS answers with your DID):
 
 - Deployed with the default name: your handle is **`bluesky.<zone>`**.
-- **Deployed under your OpenHost username** (`oh app deploy … --name <username>`):
+- **Deployed under your Cloud in a Bottle username** (`oh app deploy … --name <username>`):
   the app domain — and therefore your handle — becomes **`<username>.<zone>`**.
   This is the way to get a username-based handle that still federates.
 
-Why not `<username>.bluesky.<zone>`? OpenHost routes and TLS-terminates exactly
+Why not `<username>.bluesky.<zone>`? Cloud in a Bottle routes and TLS-terminates exactly
 **one** subdomain level per app, covered by the zone's wildcard cert
 (`*.<zone>`). A two-level host like `<username>.bluesky.<zone>` is neither
 routed nor covered by that cert, so it could not resolve over HTTPS for the
@@ -57,9 +57,9 @@ hostname that resolves to this PDS — i.e. this app's own subdomain).
 > accounts are possible but a second pretty handle would need a second routable
 > subdomain, so extra accounts fall back to DID-based identity.
 
-### Auth model — seamless OpenHost SSO
+### Auth model — seamless Cloud in a Bottle SSO
 
-When you (the OpenHost owner) open the app, you are **logged in automatically**
+When you (the Cloud in a Bottle owner) open the app, you are **logged in automatically**
 — no password prompt. The router stamps `X-OpenHost-Is-Owner: true` on your
 requests; on your first HTML navigation the auth-proxy mints a real PDS session
 server-side (from a limited, revocable SSO app-password created at bootstrap)
