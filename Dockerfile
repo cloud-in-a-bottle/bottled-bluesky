@@ -15,12 +15,14 @@
 # ---------------------------------------------------------------------------
 # Stage 1: build the social-app web bundle (patched to default to our own host).
 # ---------------------------------------------------------------------------
-FROM ghcr.io/pnpm/pnpm:11 AS web-build
+FROM ghcr.io/pnpm/pnpm:11.27.1@sha256:cc8a0551f7df20e46d6b089baf8f5f444fbd36de84ca72fd499171e474d8ec47 AS web-build
 
 ARG SOCIAL_APP_REF=1c349ad7da4fd835d3bc1067046292fc07f92271
 ENV CI=1
 ENV DEBIAN_FRONTEND=noninteractive
-ENV pnpm_config_pm_on_fail=download
+# Keep the image's pnpm: social-app pins 11.13.1, which can hang after install.
+# Node's separate devEngines runtime download remains enabled.
+ENV pnpm_config_pm_on_fail=ignore
 
 USER root
 RUN apt-get update && apt-get install --yes --no-install-recommends git ca-certificates \
