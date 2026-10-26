@@ -120,6 +120,7 @@ Overridable via env (sensible defaults baked in):
 | `PDS_DID_PLC_URL` | `https://plc.directory` | PLC directory |
 | `PDS_BSKY_APP_VIEW_URL` | `https://api.bsky.app` | AppView the PDS proxies to |
 | `PDS_CRAWLERS` | `https://bsky.network` | Relay to request crawls from |
+| `PDS_HOSTNAME` | `<app>.<zone>` | Public hostname of the PDS, and the owner's handle. Must be a bare public hostname, so the app refuses to start on a dev router's zone (`*.localhost:<port>`) unless this is set |
 | `PDS_SERVICE_HANDLE_DOMAINS` | `.<zone>` | Offered handle suffix (the zone, so the apex handle `bluesky.<zone>` validates) |
 | `BLUESKY_OWNER_HANDLE` | *(app subdomain)* | Force a specific owner handle (must resolve to this PDS) |
 
