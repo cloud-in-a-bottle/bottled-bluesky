@@ -3,7 +3,8 @@
 # Bluesky web client (bskyweb) behind a single auth-proxy on one domain.
 #
 # Pinned upstream versions (bump deliberately):
-#   PDS image:    ghcr.io/bluesky-social/pds:0.4 (official prebuilt runtime base)
+#   PDS image:    ghcr.io/bluesky-social/pds:0.4.5051@sha256:... (official prebuilt
+#                 runtime base; tag plus multi-arch index digest, bump both)
 #   web client:   bluesky-social/social-app   @ SOCIAL_APP_REF
 #
 # We base the runtime on the OFFICIAL prebuilt PDS image rather than rebuilding
@@ -17,6 +18,7 @@
 # ---------------------------------------------------------------------------
 FROM ghcr.io/pnpm/pnpm:11.27.1@sha256:cc8a0551f7df20e46d6b089baf8f5f444fbd36de84ca72fd499171e474d8ec47 AS web-build
 
+# social-app main as of 2026-08-06 (#11339); no release tag points at it.
 ARG SOCIAL_APP_REF=1c349ad7da4fd835d3bc1067046292fc07f92271
 ENV CI=1
 ENV DEBIAN_FRONTEND=noninteractive
@@ -75,7 +77,7 @@ RUN cd bskyweb/ && go build -v -trimpath -tags timetzdata \
 # in /app + goat) and layer in the bskyweb binary, Python for the auth-proxy,
 # and our control scripts.
 # ---------------------------------------------------------------------------
-FROM ghcr.io/bluesky-social/pds:0.4
+FROM ghcr.io/bluesky-social/pds:0.4.5051@sha256:8e58b79746da8a0e85698aa7ba9b53e508b94db2021d963653b6d1bfc14889c6
 
 # The official PDS image is Alpine-based. Add python + openssl + curl + bash
 # for our supervisor / auth-proxy / bootstrap (busybox already provides xxd).
