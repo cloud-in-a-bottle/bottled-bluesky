@@ -34,6 +34,17 @@ fi
 PDS_HOSTNAME="${PDS_HOSTNAME:-${APP_NAME}.${ZONE}}"
 export PDS_HOSTNAME
 
+# The owner's handle must be a bare hostname on a TLD the PDS accepts. A dev
+# router's zone (eg "zone.localhost:8080") is neither, and without a handle the
+# owner account can't be created, so stop here rather than boot unusable.
+# These TLDs are @atproto/syntax's DISALLOWED_TLDS.
+case "${PDS_HOSTNAME}" in
+  *:* | *.local | *.arpa | *.invalid | *.localhost | *.internal | *.example | *.alt | *.onion)
+    log "ERROR: ${PDS_HOSTNAME} can't be a Bluesky handle: it needs a public hostname with no port. Set PDS_HOSTNAME and PDS_SERVICE_HANDLE_DOMAINS to override."
+    exit 1
+    ;;
+esac
+
 mkdir -p "${DATA_DIR}" "${TEMP_DIR}"
 chmod 700 "${DATA_DIR}" || true
 
