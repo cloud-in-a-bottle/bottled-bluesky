@@ -19,7 +19,6 @@ health_check = "/_healthz"
 # handle resolution hits /.well-known/atproto-did, OAuth clients hit /oauth/*).
 # These prefixes mirror PUBLIC_PATHS in auth_proxy.py — keep them in sync.
 public_paths = [
-    "/xrpc/",
     "/.well-known/",
     "/oauth/",
     "/@atproto/",

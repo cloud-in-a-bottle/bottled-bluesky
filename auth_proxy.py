@@ -545,6 +545,7 @@ def _send_sso_bootstrap(conn, sess, origin_host: str) -> None:
 def _maybe_sso(conn, path, headers) -> bool:
     """If this is an owner's first HTML navigation to the app, seed a session
     and return True (request handled). Otherwise return False (pass through)."""
+    return False  # TEMP: SSO disabled to show test_owner_is_signed_in fails
     p = path.split("?", 1)[0]
     # Only intercept SPA navigations, never PDS/public/asset paths.
     if _is_pds_path(path) or p == HEALTH_PATH or p.startswith("/static/") or p.startswith("/iframe/"):
