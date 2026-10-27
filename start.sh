@@ -99,7 +99,7 @@ set -a; source "${SECRETS_FILE}"; set +a
 # PDS configuration (env). Data lives under the persistent app_data dir.
 # ---------------------------------------------------------------------------
 export PDS_PORT
-export PDS_DATA_DIRECTORY="${TEMP_DIR}/pds"  # TEMP: show test_pds_data_in_app_data fails
+export PDS_DATA_DIRECTORY="${DATA_DIR}/pds"
 export PDS_BLOBSTORE_DISK_LOCATION="${DATA_DIR}/pds/blocks"
 export PDS_BLOBSTORE_DISK_TMP_LOCATION="${TEMP_DIR}/blobs"
 export PDS_BLOB_UPLOAD_LIMIT="${PDS_BLOB_UPLOAD_LIMIT:-104857600}"

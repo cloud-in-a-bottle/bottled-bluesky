@@ -53,7 +53,10 @@ def test_anonymous_access(stack: OpenhostStack) -> None:
     deadline = time.monotonic() + 180
     while True:
         resolved = requests.get(
-            f"{stack.url}/xrpc/com.atproto.identity.resolveHandle", params={"handle": OWNER_HANDLE}, timeout=30
+            f"{stack.url}/xrpc/com.atproto.identity.resolveHandle",
+            params={"handle": OWNER_HANDLE},
+            allow_redirects=False,
+            timeout=30,
         )
         if resolved.status_code == 200 or time.monotonic() > deadline:
             break
@@ -61,7 +64,7 @@ def test_anonymous_access(stack: OpenhostStack) -> None:
     assert resolved.status_code == 200, f"{resolved.status_code}: {resolved.text[:500]}"
     assert resolved.json()["did"].startswith("did:")
 
-    describe = requests.get(f"{stack.url}/xrpc/com.atproto.server.describeServer", timeout=30)
+    describe = requests.get(f"{stack.url}/xrpc/com.atproto.server.describeServer", allow_redirects=False, timeout=30)
     assert describe.status_code == 200, f"{describe.status_code}: {describe.text[:500]}"
 
     private = requests.get(f"{stack.url}/", headers={"Accept": "text/html"}, allow_redirects=False, timeout=30)
