@@ -135,6 +135,8 @@ auth_proxy.py          # single-domain path router + header fixups
 bootstrap_account.py   # one-shot owner-account creation
 ```
 
+`cloudinabottle.toml` sets `prebuilt_image`, so Cloud in a Bottle pulls our signed prebuilt image (built by CI from each release tag) instead of building the Dockerfile. To fork and modify this app, comment out `prebuilt_image` so your instance builds from source.
+
 ## Caveats
 
 - The web client's **read path** (timelines, feeds, profiles, search) comes
