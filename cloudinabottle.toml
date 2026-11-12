@@ -1,6 +1,6 @@
 [app]
 name = "bluesky"
-version = "1.0.0"
+version = "1.1.0"
 description = "Self-hosted Bluesky: an AT Protocol PDS plus the official web client, on one domain"
 authors = ["Andrew Laack <andrew@laack.co>"]
 

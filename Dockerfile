@@ -18,8 +18,8 @@
 # ---------------------------------------------------------------------------
 FROM ghcr.io/pnpm/pnpm:11.27.1@sha256:cc8a0551f7df20e46d6b089baf8f5f444fbd36de84ca72fd499171e474d8ec47 AS web-build
 
-# social-app release 1.135.0 (checked out by commit).
-ARG SOCIAL_APP_REF=6fba2244f61c1acbf6f6017584475a1c745d320a
+# social-app release 1.137.0 (checked out by commit).
+ARG SOCIAL_APP_REF=96262a98f6eb751f50a25625ef4d2a8ac5ede626
 ENV CI=1
 ENV DEBIAN_FRONTEND=noninteractive
 # Keep the image's pnpm: social-app pins 11.13.1, which can hang after install.
