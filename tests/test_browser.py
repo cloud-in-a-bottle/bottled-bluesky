@@ -37,6 +37,10 @@ def test_owner_lands_signed_in_in_browser(stack: OpenhostStack, page: Page) -> N
     # auth_proxy.py answers the owner's first navigation with a page that seeds the web client's session store and
     # reloads; the client must then accept that session and render signed in, with no sign-in screen.
     did = _owner_did(stack)
+    browser_log: list[str] = []
+    page.on("console", lambda m: browser_log.append(f"console.{m.type}: {m.text}"[:500]))
+    page.on("pageerror", lambda e: browser_log.append(f"pageerror: {e}"[:1000]))
+    page.on("requestfailed", lambda r: browser_log.append(f"requestfailed: {r.method} {r.url} {r.failure}"[:500]))
     stack.playwright_login(page)
     # The SSO app-password is written by the background bootstrap; until then "/" is the signed-out client, so
     # navigate again (after the reload-loop cookie expires) until the owner's profile link shows in the nav.
@@ -53,7 +57,8 @@ def test_owner_lands_signed_in_in_browser(stack: OpenhostStack, page: Page) -> N
                 text = page.locator("body").inner_text()[:1500]
                 raise AssertionError(
                     f"owner not signed in at {page.url}; stored account {page.evaluate(STORED_ACCOUNT_JS)}\n"
-                    f"page text:\n{text}\n\napp logs:\n{stack.app_logs()[-5000:]}"
+                    f"page text:\n{text}\n\nbrowser log:\n" + "\n".join(browser_log[-80:]) + "\n\n"
+                    f"html:\n{page.content()[:3000]}\n\napp logs:\n{stack.app_logs()[-5000:]}"
                 ) from None
     assert page.evaluate(STORED_ACCOUNT_JS) == {"did": did, "handle": OWNER_HANDLE}
     assert page.get_by_test_id("signInButton").count() == 0, page.locator("body").inner_text()[:1500]
