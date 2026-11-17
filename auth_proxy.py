@@ -492,6 +492,9 @@ def _sso_bootstrap_page(sess, origin_host: str) -> bytes:
 (function(){
   var KEY='BSKY_STORAGE';
   var ACCT=%s.account;
+  // The client and the PDS share this origin, so it's the account's service. The server-side guess (https, no port)
+  // is only a fallback: behind a non-443 or plain-http front (the test harness) it points the client at nothing.
+  if(location.origin&&location.origin!=='null'){ ACCT.service=location.origin; ACCT.pdsUrl=location.origin; }
   var DEFAULTS=%s;
   function valid(root){
     try{ var ca=root&&root.session&&root.session.currentAccount;
